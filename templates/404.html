@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} 404: not found {% endblock %}</h1>
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Oops!</h4>
+        <p>Seems like the page you were trying to get to doesnt exist <i>yet</i></p>
+        <hr>
+        <p class="mb-0">Sorry about that. Heres a picture of a cat instead:</p><br>
+        <img src="https://www.sciencealert.com/images/2020-04/processed/CanWeGetRonaFromPets_1024.jpg" class="img-fluid rounded" alt="Responsive image"> 
+        <hr>
+        <a href="{{ url_for('index')}}" class="btn btn-outline-info">Go back to index</a>
+        <a href="https://www.google.com" class="btn btn-outline-info">Google</a>
+      </div>
+    
+{% endblock %}

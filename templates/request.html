@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+{% if results.message %}
+<div class="card border-danger">
+    <div class="card-header">
+      I'm so sorry!
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{imdb.result.title}}</h5>
+      {% if results.message == 'already exists on system' %}
+      <p class="card-text">Couldnt add this {{imdb.result.type}} as it already exists on the system.</p>
+      {% elif results.message == 'movie is already queued on the system' %}
+      <p class="card-text">This {{imdb.result.type}} is already queued.</p>
+      {% elif results.message == 'backend api error' %}
+      <p class="card-text">The backend API had some problems.</p>
+      {% else %}
+      <p class="card-text">Error: {{ results.message }}</p>
+      {% endif %}
+      <a href="#" class="btn btn-success">back to search</a>
+    </div>
+  </div> 
+
+{% else %}
+
+<div class="card border-success">
+    <div class="card-header">
+      Request successful!
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{imdb.result.title}}</h5>
+      <p class="card-text">The {{imdb.result.type}} will be on the system shortly!</p>
+      <button class="btn btn-success" onclick="goBack()">go back</button>
+      <a href="/search" class="btn btn-success">new search</a>
+    </div>
+  </div> 
+
+{% endif %}
+ 
+{% endblock %}

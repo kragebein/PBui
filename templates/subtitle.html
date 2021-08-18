@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Allows for user to upload subtitles themselves. -->
+
+{% if x == None %}
+<!-- something went wrong, user shouldnt be here without a proper id on this -->
+Some error message.
+{% endif %}
+
+<div class="card">
+    <h5 class="card-header">{{ x['Name'] }}</h5>
+    <div class="card-body">
+      <h5 class="card-title">Upload subtitle</h5>
+      <p class="card-text">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Version</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose version</option>
+                {% for y in p %}
+                <option value="{{y}}">{{p[y]}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Upload</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile01">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>
+      </p>
+      <a href="#" class="btn btn-primary">Upload subtitle</a>
+    </div>
+  </div>
+
+
+
+
+{% endblock %}

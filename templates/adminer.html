@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<div id="balls">
+  TEST TEST
+  <div class="card">
+    <h5 class="card-header">Adminer panel</h5>
+    <div class="card-body">
+    {% if x == None %}
+      <h5 class="card-title">Add a user</h5>
+      <p class="card-text">Clicking the create user button will provide you a link to create users that can access the system</p>
+    {% else %}
+    <h5 class="card-title">Add a user</h5>
+    <p class="card-text">Signup created<br>https://cloud.lazywack.no/signup/{{ x }}</p>
+    {% endif %}
+      <form method="post">
+          <input type="hidden" id="create" name="create" value="create">
+        </div>
+        <div class="form-group">
+        <a href="/" class="btn btn-primary">go back</a>
+        <button type="submit" id="btnFetch" class="btn btn-primary">Create user link</button>
+        <button type="submit" id="glitch" class="btn btn-primary">glitchloader</button>
+
+    </div>
+</form>
+
+    </div>
+  </div>
+
+
+{% endblock %}

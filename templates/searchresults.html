@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %}  {% endblock %}</h1>
+
+
+<form method="post" action="/search">
+    <div class="form-group">
+        <label for="title">Movie or TVshow title</label>
+        <input type="text" name="title"
+        placeholder="5th element, Game of thrones, Star-trek.." class="form-control"
+        value="{{ request.form['title'] }}" id="_sjarken" aria-autocomplete="list" aria-haspopup="true"></input>
+    </div>
+    <div class="form-group">
+        <button type="submit" id="sok2" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+{% if querylen  %}
+<div class="alert alert-danger text-center bouncerlol" role="alert">Stop being retarded and enter a query.</div>
+{% else %}
+{% if results['result'] == 'no matches for query' %}
+<div class="alert alert-danger text-center bouncerlol" role="alert">
+    {{ request.form['title'] }} yielded no results. 
+</div>
+{% else %}
+<div class="alert alert-success text-center bouncerlol" role="alert">
+    Found {{ matches - omitted }} results for your query {{ request.form['title'] }}
+
+</div>
+<div id="api_key" class="d-none">{{x.key}}</div>
+<script>
+function dorequest(imdbid) {
+console.log('Got ID:' + imdbid)
+var api_key = document.getElementById("api_key");
+var key = api_key.innerHTML + '/request/';
+var api = 'rest/';
+var xhttp = new XMLHttpRequest();
+var element, emblem, newemblem;
+xhttp.onreadystatechange = function() {
+    element = document.getElementById("request_text_" + imdbid);
+    if (element) {element.innerHTML = "Requesting " + imdbid + "...";}
+if (this.readyState == 4 && this.status == 200) {
+    var obj = JSON.parse(this.responseText)
+    console.log(obj)
+    switch (obj['result']) {
+        default:
+            // unknown response 
+            var _log = "Error. unkonwn response.";
+                element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            console.log(_log);
+            break;
+        case null:
+            // unknown response 
+            var _log = "Error, this item has the wrong type declaration (episode/movie) and must be added manually.";
+            element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log ;}
+            console.log(_log + "\nBackend returned null, which means the movie handler tried to get a tv show, or the tvshow handler tried to get a movie.");
+            break;
+        case "movie was added":
+            var _log = "This item was requested successfully";
+            // Item was requested successfully
+            element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            console.log(_log);
+                break;
+        case "already exists on system":
+            // Item already exists on system
+            var _log = "This item has already been requested and is queued to be scanned by Emby";
+            element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            console.log(_log)
+            break;
+        case "movie is already queued on the system":
+            // item is already queued.
+            var _log =  "This item is already queued";
+                element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            break;
+        case "backend api error":
+            // API backend throws error
+            var _log = "Sorry, unable to request this item.<br>Something went wrong while requesting.";
+                element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            console.log(_log);
+            break;
+        case "not_tmdb":
+            // This show doesnt exist on thetvdb.
+            var _log = "This item doesnt exist on thetvdb and cannot be added.";
+            element = document.getElementById("request_text_" + imdbid);
+            if (element) {element.innerHTML = _log;}
+            console.log(_log);
+            break;     
+        } // end switch
+        // remove the request button
+        element = document.getElementById("button_text_" + imdbid);
+        if (element) {
+            element.remove();
+        }
+
+    } // end readyState
+    else {
+        // something went wrong with the request
+        if (this.readyState == 4 && this.status == 200) { // prevent error from showing up before anything else.
+        element = document.getElementById("request_text_" + imdbid);
+        if (element) {element.innerHTML = "HTTP " + this.status + " from backend, se console for debug data";}
+        } // end secondary readystate
+    }
+} // end request
+
+xhttp.open('Access-Control-Allow-Origin', '*')
+xhttp.open("GET", api + key + imdbid , true);
+xhttp.send();
+}
+</script>
+<div class="d-lg-none">    
+    <!-- Search results, small viewsize -->
+{% for result in data %}
+{% if result['result']['poster'] != 'N/A' %}
+<div class="mx-auto">
+    <div class="card" id="squeeze_{{result.result.imdb_id}}">
+        <span class="badge badge-light">
+            <div class="d-flex justify-content-between">
+                <div class="p-1">{{result['result']['type']}}</div>
+                <div class="p-1">
+                {% if result['plex'] == True %}
+                    <span class="p-1 badge badge-success">Is already on Emby</span>
+                    {% else %}
+                    <span class="p-1 badge badge-danger" id="emblem_{{ result.result.imdb_id }}">Not on Emby</span>
+                    {% endif %}
+                </div>
+            </div>
+        </span>
+        
+        {% if result['plex'] != True %}
+            <a tabindex="0" class="card-img-top" data-toggle="modal" data-target="#exampleModal{{ result.result.imdb_id }}" alt="{{ result['result']['title'] }}"><img src="{{ result['logo'] if result['logo'] else result['result']['poster']}}" width="100%"></img></a>
+        {% else %}
+            <a tabindex="0" class="card-img-top" data-toggle="popover" data-placement="top" data-trigger="focus" title="Already exists on Emby!" data-content="This {{result.result.type}} already exists and cannot be requested" alt="{{ result['result']['title'] }}"><img data-micron="shake" data-micron-bind="true" data-micron-id="squeeze_{{result.result.imdb_id}}" src="{{ result['logo'] if result['logo'] else result['result']['poster']}}" width="100%"></img></a>
+        {% endif %}
+        
+        <div class="card-body">
+            <h5 class="card-title text-align-middle">{{ result['result']['title'] }}</h5>
+            <div class="d-flex justify-content-between">
+            <div class="p-1">{{ result['result']['plot'] }}</div>
+            <div class="p-1">Plot</div>
+            </div></span>
+
+        </div>
+        <ul class="list-group list-group-flush text-left">
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                <div class="p-1">{{ result['result']['genre']}}</div>
+                <div class="p-1">genre</div>
+                </div></span>
+            </li>
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                <div class="p-1">{{ result['result']['actors'] }}</div>
+                <div class="p-1">actors</div>
+                </div></span>
+            </li>
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                <div class="p-1">{{ result['result']['writer'] }}</div>
+                <div class="p-1">writers</div>
+                </div></span>
+            </li>
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                <div class="p-1">{{ result['result']['released'] }}</div>
+                <div class="p-1">released</div>
+                </div></span>
+            </li>                    
+        </ul>
+
+            <!-- Request popup! -->
+
+                <div class="modal" id="exampleModal{{ result.result.imdb_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ result.result.imdb_id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel{{ result.result.imdb_id }}">{{ result['result']['title']}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body" id="request_text_{{ result.result.imdb_id }}">
+                            This will request the {{result['result']['type']}} "{{ result['result']['title']}}"<br>
+                            <b>Are you sure ?</b>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button onclick="dorequest('{{result.result.imdb_id}}')" type="submit" class="btn btn-primary" id="button_text_{{ result.result.imdb_id }}">Request!</button>
+                        
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+            <!--
+                for future
+            {% if result['plex'] ==  True %}
+            <form method='POST' action="/subtitles"><input type="hidden" id="id" name="id" value="{{ result['result']['imdb_id']}}">
+                <button type="submit" class="btn btn-outline-success">Subtitles</button></form> 
+            {% else %}
+            <a href="https://www.imdb.com/title/{{ result['result']['imdb_id']}}" target="_blank" class="btn btn-outline-success">imdb</a>
+            {% endif %}
+            -->
+            
+        
+
+
+                            <!-- End more information-->
+    
+</div>
+</div><br>
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
+
+{% endif %}
+{% endif %} 
+        <br>
+{% endblock %}

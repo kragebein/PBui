@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %} <center><img height="50%" width="100%" src="https://www.seekpng.com/png/full/825-8254445_new-png.png"></center> {% endblock %}</h1>
+{% for x in json %}
+{% if loop.index <= 5 %}
+{% if json[x]['type'] == 'Movie' %}
+<div class="card text-center">
+<span class="badge badge-light">
+<div class="d-flex justify-content-between">
+  <div class="p-1">Movie</div>
+  <div class="ml-5 p-1">released {{json[x]['year']}}</div>
+  <div class="p-1"><span class="badge badge-success">{{json[x]['added']}}</span></div>
+</div></span>
+
+  <a class="card-img-top p-1" href="https://e.lazywack.no/web/index.html#!/item?id={{x}}&serverId=8b3b86317ca74605b219d73980c32c65" target="_blank" alt="{{json[x]['name']}}"><img src="{{json[x]['poster']}}"></img></a>
+  <div class="card-body">
+    <h5 class="card-title">{{json[x]['name']}}</h5>
+    <p class="card-text">{{json[x]['plot']}}</p>
+  </div>
+</div><br>
+
+
+{% elif json[x]['type'] == 'Episode' %}
+<div class="card text-center">
+<span class="badge badge-light">
+<div class="d-flex justify-content-between">
+  <div class="p-1">Episode</div>
+  <div class="ml-5 p-1">released {{json[x]['year']}}</div>
+  <div class="p-1"><span class="badge badge-success">{{json[x]['added']}}</span></div>
+</div></span>
+<span class="badge badge-dark">Season {{json[x]['season']}}, episode {{json[x]['episode']}}</span>
+  <a class="card-img-top p-1" href="https://e.lazywack.no/web/index.html#!/item?id={{x}}&serverId=8b3b86317ca74605b219d73980c32c65" alt="{{json[x]['name']}}"><img src="{{json[x]['poster']}}" width="50%"></img></a>
+  <div class="card-body">
+    <h5 class="card-title">{{json[x]['show']}} - {{json[x]['name']}}</h5>
+    <p class="card-text">{{json[x]['plot']}}</p>
+  </div>
+</div></br>
+
+
+{% else %}
+<div class="card text-center">
+  <img class="card-img-top" src="" alt="N/A">
+  <div class="card-body">
+    <h5 class="card-title">Item not fully processed yet.</h5>
+    <p class="card-text">Item not fully processed yet.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">N/A</li>
+    <li class="list-group-item">N/A</li>
+    <li class="list-group-item"><span class="badge badge-pill badge-primary">{{json[x]['type']}}</span></li>
+    <li class="list-group-item"><a class="btn btn-primary" href="https://e.lazywack.no/web/index.html#!/item?id={{x}}&serverId=8b3b86317ca74605b219d73980c32c65" target="_new" role="button">Go to item</a></li>
+  </ul>
+</div></br>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+{% endblock %}

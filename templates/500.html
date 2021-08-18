@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>{% block title %} 500: Internal server error! {% endblock %}</h1>
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Oops!</h4>
+        <p>So the server crashed.</p>
+        <hr>
+        <p class="mb-0">Blame this programmer:</p><br>
+        <div class="text-center">
+            <img src="https://i.imgur.com/ocYTFBu.png" class="rounded" alt="...">
+          </div>
+        <a href="{{ url_for('index')}}" class="btn btn-outline-info">Go back to index</a>
+        <a href="https://www.google.com" class="btn btn-outline-info">Google</a>
+      </div>
+    
+{% endblock %}

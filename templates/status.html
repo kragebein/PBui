@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %} {% endblock %}</h1>
+
+
+{% for i in stat %}
+
+  <div class="card text-center">
+    <div class="card-header">
+    {% if stat[i]['type'] == 'Episode' %}
+      {{stat[i]['name']}} - ({{stat[i]['season']}}x{{stat[i]['episode']}})
+    {%else %}
+      {{stat[i]['name']}}
+    {% endif %}
+  </div>
+
+ <!-- Runtime Progress bar.-->
+    <div class="progress" style="height: 2px;">
+      {% if stat[i]['transcode'] == 'Transcode' %}
+      <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{stat[i]['progress']}}%;" aria-valuenow="{{stat[i]['ticks']}}" aria-valuemin="0" aria-valuemax="{{stat[i]['totalticks']}}"></div>
+      <div class="progress-bar bg-light" role="progressbar" style="width: {{100 - stat[i]['progress']}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      {% else %}
+      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{stat[i]['progress']}}%;" aria-valuenow="{{stat[i]['ticks']}}" aria-valuemin="0" aria-valuemax="{{stat[i]['totalticks']}}"></div>
+      <div class="progress-bar bg-light" role="progressbar" style="width: {{100 - stat[i]['progress']}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      {% endif %}
+    </div>
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text">
+    <ul class="list-unstyled">
+  <li class="media">
+        <span class="align-self-start mr-3">
+        <small> {% if stat[i]['state'] == 'playing' %}
+        <span class="ml-1 mr-1 badge badge-pill badge-success">{{stat[i]['state']}}</span><br>
+        {% else %}
+        <span class="ml-1 mr-1 badge badge-pill badge-warning">{{stat[i]['state']}}</span><br>
+        {% endif %}
+        {% if stat[i]['transcode'] == 'Transcode' %}
+        <span class="badge badge-pill badge-danger">{{stat[i]['transcode']}}</span><br>
+        {% elif stat[i]['transcode'] == 'DirectStream' %}
+        <span class="badge badge-pill badge-success">Direct Play</span><br>
+        {% endif %}
+        <span class="badge badge-pill badge-info">{{stat[i]['codec']}}</span><br>
+        <span class="badge badge-pill badge-info">{{stat[i]['resolution']}}</span><br>
+        <span class="badge badge-pill badge-info">{{stat[i]['bitrate']}} mbit/s</span><br>
+        <span class="badge badge-pill badge-info">{{stat[i]['length']}} mins</span><br>
+        <span class="badge badge-pill badge-info">{{stat[i]['progress']}}%</span><br>
+        </small>
+        </span>
+    <div class="media-body">
+      {% if stat[i]['type'] == 'Episode' %}
+      <h5 class="mt-0 mb-1"><a href="https://e.lazywack.no/web/index.html#!/item?id={{stat[i]['id']}}&serverId=8b3b86317ca74605b219d73980c32c65" target="_blank"><img style="width:100%" src="{{stat[i]['poster']}}" alt="{{stat[i]['name']}}"></img></a></h5>
+      {% else %}
+       <h5 class="mt-0 mb-1"><a href="https://e.lazywack.no/web/index.html#!/item?id={{stat[i]['id']}}&serverId=8b3b86317ca74605b219d73980c32c65" target="_blank"><img style="width:100%" src="{{stat[i]['poster']}}" alt="{{stat[i]['name']}}"></img></a></h5>
+      {% endif %}
+    
+      {{stat[i]['plot']}}
+        <small>
+        <p class="mb-2 mr-2 ml-1">
+        </small>
+    </div>
+  </li>
+</ul>
+    </p>
+    
+  </div>
+  <div class="card-footer text-muted">
+    {{stat[i]['user']}} is Playing on {{stat[i]['client']}} using {{stat[i]['device']}}
+  </div>
+</div><br>
+
+
+{% endfor %}
+</br>
+ <ul class="list-group">
+    <li class="list-group-item">
+        <p class="font-weight-light">Fileserver <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="if system.net is high, you might experience buffering">  
+            <small><span class="badge badge-info">?</span></small>
+          </span></p>
+        <img src="https://cloud.lazywack.no/f1?chart=system.cpu"></img>
+        <img src="https://cloud.lazywack.no/f1?chart=system.io"></img>
+        <img src="https://cloud.lazywack.no/f1?chart=system.net"></img>
+        <img src="https://cloud.lazywack.no/f1?chart=system.uptime"></img>
+        <img src="https://cloud.lazywack.no/f1?chart=system.load"></img>
+
+    </li>
+    <li class="list-group-item">
+        <p class="font-weight-light">Mediaserver <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="if system.cpu is high, you might experience buffering">  
+            <small><span class="badge badge-info">?</span></small>
+          </span></p>
+        <img src="https://cloud.lazywack.no/p1?chart=system.cpu"></img>
+        <img src="https://cloud.lazywack.no/p1?chart=system.io"></img>
+        <img src="https://cloud.lazywack.no/p1?chart=system.net"></img>
+        <img src="https://cloud.lazywack.no/p1?chart=system.uptime"></img>
+        <img src="https://cloud.lazywack.no/p1?chart=system.load"></img>
+    </li>
+    <li class="list-group-item"> <p class="font-weight-light">BankID <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="if system.cpu is high, you might experience buffering">  
+      <small><span class="badge badge-info">?</span></small></span></p>
+    <img src="https://lazywack.no/bankid/image.png" width="500" height="80"></img>
+    </li>
+
+  </ul>
+<br>
+
+{% endblock %}
+

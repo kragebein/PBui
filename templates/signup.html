@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br><br>
+<span class="nav justify-content-center">
+{% if invalid %}
+<script>
+alert('Invalid username or already registered');
+</script>
+{% endif %}
+<div class="modal fade" id="whatsthis" tabindex="-1" role="dialog" aria-labelledby="whatsthis" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h5 class="modal-title" id="whatsthis">wtf is this?</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+      <div class="modal-body" id="text">
+      You need to register this application with the backend, this way i can later use the device fingerprint to track requests and other actions done through this app.</br>
+      You only need to do this once. 
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+      <div class="text-muted bd-highlight"><small>If you need to re-register, contact admin</small></div>
+      <button type="button" class="btn btn-primary bd-highlight" data-dismiss="modal">Close</button>
+      </div>
+  </div>
+  </div>
+  </div>
+<div class="card text-white bg-secondary mb-3">
+  <div class="card-header d-flex justify-content-between"><div class="bd-highlight">Unregistered device</div><div class="bd-highlight"><span class="badge badge-primary" data-toggle="modal" data-target="#whatsthis">whats this?</span></div></div>
+  <div class="card-body">
+    
+    <p class="card-text">
+<form action="/signup" method="POST">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp" placeholder="" style="width: 20rem;">
+      <small id="usernameHelp" class="form-text text-light">Enter your Emby username here (case sensitive).</small>
+    </div>
+    <div class="form-group">
+      <label for="Password">device id</label>
+      <input type="text" name="_id" class="form-control" value="{{_id}}" id="_id" placeholder="{{_id}}" style="width: 20rem;" readonly>
+      <small id="passwordhelp" class="form-text text-light">The device id is spesific to your app, and your app only</small>
+    </div>
+    <button type="submit" class="btn btn-primary">register device</button>
+  </form>
+</span>
+</p>
+  </div>
+{% endblock %}

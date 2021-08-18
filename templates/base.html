@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- Bootstrap CSS -->
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        -->
+
+        <style>
+          .removeatt {
+          opacity: 0;
+          transition: opacity 2s ease-in-out;
+          -moz-transition: opacity 2s ease-in-out;
+          -webkit-transition: opacity 2s ease-in-out;
+   }
+          .bouncerlol {
+        	animation: bounce-in-top 3s ease-out both;
+          }
+          @keyframes bounce-in-top {
+          0% {
+            transform: translateY(-3000px);
+            animation-timing-function: ease-in;
+            opacity: 0;
+          }
+          38% {
+            transform: translateY(0);
+            animation-timing-function: ease-out;
+            opacity: 1;
+          }
+          55% {
+            transform: translateY(-65px);
+            animation-timing-function: ease-in;
+          }
+          72% {
+            transform: translateY(0);
+            animation-timing-function: ease-out;
+          }
+          81% {
+            transform: translateY(-28px);
+            animation-timing-function: ease-in;
+          }
+          90% {
+            transform: translateY(0);
+            animation-timing-function: ease-out;
+          }
+          95% {
+            transform: translateY(-8px);
+            animation-timing-function: ease-in;
+          }
+          100% {
+            transform: translateY(0);
+            animation-timing-function: ease-out;
+          }
+          }
+        </style>
+        <script>
+
+        function loadPage(page) {
+          document.getElementById("removeme").classList.add("fade");
+          console.log(page);
+          // Drop down page loader
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+          
+          document.write(this.responseText); 
+          var element = document.getElementById("underdog").classList.add("bounce-in-top");
+          
+          }
+          }
+          // end 
+         
+          xhttp.open('GET', page, true);
+          xhttp.send();
+        
+        }
+
+
+        function gonative_device_info(info) {
+        // Id vector auth.
+        var id = info.installationId
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var response = this.responseText.split(' ');
+          if (response[0] != "registered") {
+            // Unregistered application. 
+          document.write(this.responseText); 
+          document.getElementById("username").innerHTML = "Unkown user!";
+          } else {
+            // Application is registered.
+            document.getElementById("username").innerHTML = response[1];
+          }
+
+          } }
+        // 
+        xhttp.open('GET', '/id/' + id, true);
+        xhttp.send();
+        
+      }
+      
+      </script>
+        <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+        <link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
+
+        
+        <title>{% block title %} PBui {% endblock %}</title>
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="/"><div id="placeholder_"><img src="https://lazywack.no/files/logo.png" style="width:25px;"></div>
+          <small><div style="height:1px;font-size:15px;" class="align-middle text-muted" id="username">PBui</small></div>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="btn btn-primary btn-lg btn-block my-2 " href="/search"  id="sok" style="padding-bottom: 5px;">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary btn-lg btn-block my-2 " href="/status"  id="_status" style="padding-bottom: 5px;">Status</a>
+            </li>
+            <li class="nav-item">
+            <a class="btn btn-primary btn-lg btn-block my-2" href="/requests" id="_project_status" style="padding-bottom: 5px;">Requests</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary btn-lg btn-block my-2 " href="/projectstatus"  id="_project">Project</a>
+              
+            </li>
+          </div>
+          </ul>
+        </div>
+      </nav>
+    <div class="container">
+        {% block content %} 
+        
+      <!-- Between these blocks, the other sites will appear-->
+        
+        {% endblock %}
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>    
+    <script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
+  
+
+    <script>       
+    $(document).ready(function(){
+      $("#sok2").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+        });
+    });
+    $(document).ready(function(){
+      $("#imdb").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+      });
+    });
+     $(document).ready(function(){
+      $("#_project").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+      });
+    });
+    $(document).ready(function(){
+      $("#placeholder_").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+      });
+    });
+    $(document).ready(function(){
+      $("#_status").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+      });
+    });
+    $(document).ready(function(){
+      $("#sok").click(function(){
+        $("#placeholder_").html("<div class=\"spinner-border text-dark\" role=\"status\"><span class=\"sr-only\"><img src=\"https://lazywack.no/files/logo.png\"></span><img src=\"https://lazywack.no/files/logo.png\"  width=\"200%\"></div>");
+      });
+    });
+    </script>
+
+
+              <script>
+         $(document).ready(function() {
+     window.setTimeout("fadeMyDiv();", 3000); //call fade in 3 seconds
+   }
+  )
+  
+  function fadeMyDiv() {
+     jQuery("#balls").fadeOut('slow');
+  }
+
+  </script>
+    <script>
+        $(function () {
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus',
+            container: 'body'
+        }) 
+
+        });
+    </script>
+  </body>
+</html>

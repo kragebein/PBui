@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %} </br> {% endblock %}</h1>
+
+{% if data == False %}
+    <div class="card">
+        <div class="card-body bg-success rounded text-center">
+            No active requests or function not ready yet.
+      </div>
+    </div>
+{% else %}
+{#lets try loading this page using javascript instead.#}
+<div id="itemlist">{{data}}</div>
+<script>
+    var list = new document.getElementbyId('itemlist').innerHTML; // grab list from html.
+    document.getElementById('itemlist').style.display = 'none';
+    for (item in list) {
+        // Grab the imdb data for this item
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              
+          }
+        }
+    }
+
+</script>
+{% endif %}
+
+{% endblock %}
+

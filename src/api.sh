@@ -1,0 +1,1 @@
+grep . /home/krage/PlexApi/ -R | grep -v "api.log"  | grep -v "*.pyc" |wc -l

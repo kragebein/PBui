@@ -1,0 +1,40 @@
+{% block content %}
+<body>
+<element onload="bleh">
+<div id="page">Loading
+<button data-micron="bounce" onclick="runn();">Load page.</button>
+</div>
+</body>
+ <link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
+<script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
+
+<script>
+function run() {
+        
+        // Id vector auth.
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          if (this.responseText) {
+            var me = document.getElementById("page");
+            me.innerHTML = this.responseText;
+            me.classList.add("bouncerlol");
+            
+          } else {
+            // Application is registered.
+          
+          }
+
+          } }
+        // 
+        xhttp.open('GET', '/projectstatus', true);
+        xhttp.send();
+        
+      }
+
+</script>
+
+
+{% endblock %}
+
